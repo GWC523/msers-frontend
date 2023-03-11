@@ -1,0 +1,13 @@
+.redirect__header {
+    font-weight: 700;
+    font-size: 50px;
+    color: #00A98C;
+}
+
+.redirect__body {
+    width: 50%;
+}
+
+a:link, a:visited {
+  color: #00A98C;
+}

@@ -8,7 +8,8 @@ import {
 
 /** PAGES **/
 import Homepage from './Pages/Homepage';
-
+import Detector from './Pages/Detector';
+import Finish from './Pages/Finish';
 
 function App() {
   //APP NAME
@@ -20,6 +21,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Homepage/>}/>
+          <Route path="/detector" element={<Detector/>}/>
+          <Route path="/redirect" element={<Finish/>}/>
         </Routes>
       </Router>
     </div>
