@@ -7,11 +7,44 @@ import "./Homepage.css"
 
 //css
 import LandingImage from "../Assets/Images/homepage_image.png"
+import { ValidateForm } from '../Helper/Validation/FormValidation'
+import InputError from '../Components/InputError'
 
 
 function Homepage() {
   const [proceed, setProceed] = useState(false);
+  const [personalDetails, setPersonalDetails] = useState({
+    name: "",
+    student_id: "",
+    age: "",
+    gender: "",
+    year_level: "",
+    program: ""
+  })
+  const [isError, setIsError] = useState({
+    name: false,
+    student_id: false,
+    age: false,
+    gender: false,
+    year_level: false,
+    program: false
+  })
   let navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value} = e.target;
+    setPersonalDetails(prevState => ({
+        ...prevState,
+        [name]: value
+    }))
+  }
+
+  async function submit() {
+    if(ValidateForm(personalDetails, setIsError) === true){
+        navigate("/detector");
+        
+    }
+  }
 
 
   return (
@@ -25,28 +58,34 @@ function Homepage() {
                             <p className='form__title floating'>Personal Details</p>
                             <div className='row form__content floating'>
                                 <div className='col-md-6'>
-                                    <input type="text" name="name" className='input__text_1' placeholder='Name'/>
-                                    <input type="number" name="name" className='input__text_1 mt-4' placeholder='Age'/>
-                                    <select id="standard__select" name="year_level">
+                                    <input type="text" name="name" className='input__text_1' placeholder='Name' value={personalDetails.name} onChange={(e) => handleChange(e)}/>
+                                    <InputError isValid={isError.name} message={'Name is required*'}/>
+                                    <input type="number" name="age" className='input__text_1 mt-4' placeholder='Age' value={personalDetails.age} onChange={(e) => handleChange(e)}/>
+                                    <InputError isValid={isError.age} message={'Age is required*'}/>
+                                    <select id="standard__select" name="year_level" value={personalDetails.year_level} onChange={(e) => handleChange(e)}>
                                         <option value="" selected disabled>Year Level</option>
                                         <option value="I">I</option>
                                         <option value="II">II</option>
                                         <option value="III">III</option>
                                         <option value="IV">IV</option>
                                     </select>
+                                    <InputError isValid={isError.year_level} message={'Year level is required*'}/>
                                 </div>
                                 <div className='col-md-6'>
-                                    <input type="text" name="name" className='input__text_2' placeholder='Student ID'/>
-                                    <select id="standard__select" name="Gender">
+                                    <input type="text" name="student_id" className='input__text_2' placeholder='Student ID' value={personalDetails.student_id} onChange={(e) => handleChange(e)}/>
+                                    <InputError isValid={isError.student_id} message={'Student ID is required*'}/>
+                                    <select id="standard__select" name="gender" value={personalDetails.gender} onChange={(e) => handleChange(e)}>
                                         <option value="" selected disabled>Gender</option>
                                         <option value="male">Male</option>
-                                        <option value="female">female</option>
+                                        <option value="female">Female</option>
                                     </select>
-                                    <input type="text" name="program" className='input__text_2 mt-4' placeholder='Program'/>
+                                    <InputError isValid={isError.gender} message={'Gender is required*'}/>
+                                    <input type="text" name="program" className='input__text_2 mt-4' placeholder='Program' value={personalDetails.program} onChange={(e) => handleChange(e)}/>
+                                    <InputError isValid={isError.program} message={'Program is required*'}/>
                                 </div>
                                 </div>
                             <p className='form__agreement'>By clicking start, you agree to let the site record your personal data for research purposes. Your data will only be used for this purpose only. Rest assured your data will be protected for privacy and confidentiality. </p>
-                            <button className='start__btn' onClick={() => navigate("/detector")}>Start</button>
+                            <button className='start__btn' onClick={() => submit()}>Start</button>
                             </>
                         )}
                         {proceed == false && (
