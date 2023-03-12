@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useStopwatch } from 'react-timer-hook'
 
 import './Detector.css'
+import { getStudentId } from '../Helper/Utils/Common'
 
 
 function MyStopwatch() {
@@ -38,7 +39,7 @@ function Detector() {
             </div>
         </div>
         <div className='d-flex justify-content-center'>
-            <p className='detector__body'>The system is currently detecting your student engagement levels. Please do not close this tab while class is still ongoing. Click the end button once the class is finished. You will be redirected to a new page to fill-up the self-reported in-class student engagement survey. This data will be compared to the results computed by using the system. </p>
+            <p className='detector__body'>Hello student ID:{getStudentId()}! The system is currently detecting your student engagement levels. Please do not close this tab while class is still ongoing. Click the end button once the class is finished. You will be redirected to a new page to fill-up the self-reported in-class student engagement survey. This data will be compared to the results computed by using the system. </p>
         </div>
         <div className='d-flex justify-content-center'>
             <MyStopwatch />

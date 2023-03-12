@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Navbar from '../Components/Navbar'
 import { useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
 
 //Assets
 import "./Homepage.css"
@@ -9,6 +10,7 @@ import "./Homepage.css"
 import LandingImage from "../Assets/Images/homepage_image.png"
 import { ValidateForm } from '../Helper/Validation/FormValidation'
 import InputError from '../Components/InputError'
+import { createStudent } from '../Helper/ApiCalls/PersonalDetailsApi'
 
 
 function Homepage() {
@@ -41,8 +43,17 @@ function Homepage() {
 
   async function submit() {
     if(ValidateForm(personalDetails, setIsError) === true){
-        navigate("/detector");
-        
+        const response = await createStudent(personalDetails);
+        console.log(response)
+        if(response.data.status == 200) {
+            localStorage.setItem("participant_id", JSON.stringify(response.data.data?.id));
+            localStorage.setItem("student_id", JSON.stringify(response.data.data?.student_id));
+            navigate("/detector");
+        } else {
+            console.log("Error")
+            toast.error("An unexpected error occurred. Please try again.")
+        }
+
     }
   }
 
@@ -51,6 +62,7 @@ function Homepage() {
     <div className='page'>
         <Navbar title={"MSERS"}/>
         <div className='content'>
+            <Toaster/>
             <div className='row'>
                 <div className='col-md-6'>
                         {proceed == true && (
@@ -64,10 +76,10 @@ function Homepage() {
                                     <InputError isValid={isError.age} message={'Age is required*'}/>
                                     <select id="standard__select" name="year_level" value={personalDetails.year_level} onChange={(e) => handleChange(e)}>
                                         <option value="" selected disabled>Year Level</option>
-                                        <option value="I">I</option>
-                                        <option value="II">II</option>
-                                        <option value="III">III</option>
-                                        <option value="IV">IV</option>
+                                        <option value="1">I</option>
+                                        <option value="2">II</option>
+                                        <option value="3">III</option>
+                                        <option value="4">IV</option>
                                     </select>
                                     <InputError isValid={isError.year_level} message={'Year level is required*'}/>
                                 </div>
@@ -76,8 +88,8 @@ function Homepage() {
                                     <InputError isValid={isError.student_id} message={'Student ID is required*'}/>
                                     <select id="standard__select" name="gender" value={personalDetails.gender} onChange={(e) => handleChange(e)}>
                                         <option value="" selected disabled>Gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                     <InputError isValid={isError.gender} message={'Gender is required*'}/>
                                     <input type="text" name="program" className='input__text_2 mt-4' placeholder='Program' value={personalDetails.program} onChange={(e) => handleChange(e)}/>
