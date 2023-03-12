@@ -54,6 +54,8 @@ function Homepage() {
             toast.error("An unexpected error occurred. Please try again.")
         }
 
+    } else {
+        toast.error("Please fill-up all inputs to proceed.")
     }
   }
 
